@@ -49,25 +49,25 @@
             <div class="ml-10 flex items-baseline space-x-4">
               <button
                 on:click={GoToAcc}
-                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Accueil
               </button>
               <button
                 on:click={GoToBib}
-                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Bibliothèque
               </button>
               <button
                 on:click={GoToAdd}
-                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Ajouter
               </button>
               <button
                 on:click={GoToLaH}
-                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Livre Au Hasard
               </button>
