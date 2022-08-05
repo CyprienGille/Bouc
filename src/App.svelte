@@ -1,65 +1,104 @@
 <script lang="ts">
   import logo from "./assets/svelte.png";
-  import Counter from "./lib/Counter.svelte";
+  import settings from "./assets/settings.png";
+  import Accueil from "./lib/Accueil.svelte";
+  import Bibliotheque from "./lib/Bibliotheque.svelte";
+  import Ajouter from "./lib/Ajouter.svelte";
+  import LivreAuHasard from "./lib/LivreAuHasard.svelte";
+
+  let showAcc = true;
+  let showBib = false;
+  let showAdd = false;
+  let showLaH = false;
+
+  function GoToAcc() {
+    showAcc = true;
+    showBib = false;
+    showAdd = false;
+    showLaH = false;
+  }
+  function GoToBib() {
+    showAcc = false;
+    showBib = true;
+    showAdd = false;
+    showLaH = false;
+  }
+  function GoToAdd() {
+    showAcc = false;
+    showBib = false;
+    showAdd = true;
+    showLaH = false;
+  }
+  function GoToLaH() {
+    showAcc = false;
+    showBib = false;
+    showAdd = false;
+    showLaH = true;
+  }
 </script>
 
 <main>
-  <img class="mx-auto" src={logo} alt="Svelte Logo" />
-  <h1>Hello Typescript!</h1>
+  <nav class="bg-sky-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <img class="h-9 w-9" src={logo} alt="Logo" />
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <button
+                on:click={GoToAcc}
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+              >
+                Accueil
+              </button>
+              <button
+                on:click={GoToBib}
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+              >
+                Bibliothèque
+              </button>
+              <button
+                on:click={GoToAdd}
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+              >
+                Ajouter
+              </button>
+              <button
+                on:click={GoToLaH}
+                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-md font-semibold text-xl"
+              >
+                Livre Au Hasard
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="hidden md:block">
+          <div class="ml-4 flex items-center md:ml-6">
+            <button
+              type="button"
+              class="bg-inherit p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+            >
+              <span class="sr-only">View notifications</span>
+              <img class="h-8 w-8" src={settings} alt="Settings" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-  <Counter />
-
-  <p>
-    Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-    apps.
-  </p>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a> for
-    the officially supported framework, also powered by Vite!
-  </p>
+  {#if showAcc}
+    <Accueil />
+  {/if}
+  {#if showBib}
+    <Bibliotheque />
+  {/if}
+  {#if showAdd}
+    <Ajouter />
+  {/if}
+  {#if showLaH}
+    <LivreAuHasard />
+  {/if}
 </main>
-
-<style>
-  :root {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  }
-
-  main {
-    text-align: center;
-    padding: 1em;
-    margin: 0 auto;
-  }
-
-  img {
-    height: 16rem;
-    width: 16rem;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4rem;
-    font-weight: 100;
-    line-height: 1.1;
-    margin: 2rem auto;
-    max-width: 14rem;
-  }
-
-  p {
-    max-width: 14rem;
-    margin: 1rem auto;
-    line-height: 1.35;
-  }
-
-  @media (min-width: 480px) {
-    h1 {
-      max-width: none;
-    }
-
-    p {
-      max-width: none;
-    }
-  }
-</style>
