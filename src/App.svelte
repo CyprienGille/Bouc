@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import logo from "./assets/svelte.png";
   import settings from "./assets/settings.png";
   import Accueil from "./lib/Accueil.svelte";
@@ -69,16 +68,13 @@
     </div>
   </nav>
 
-  {#if displayID == 0}
-    <Accueil />
-  {/if}
   {#if displayID == 1}
     <Bibliotheque />
-  {/if}
-  {#if displayID == 2}
+  {:else if displayID == 2}
     <Ajouter />
-  {/if}
-  {#if displayID == 3}
+  {:else if displayID == 3}
     <LivreAuHasard />
+  {:else}
+    <Accueil />
   {/if}
 </main>
