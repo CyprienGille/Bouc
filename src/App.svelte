@@ -1,40 +1,20 @@
 <script lang="ts">
+
   import logo from "./assets/svelte.png";
   import settings from "./assets/settings.png";
   import Accueil from "./lib/Accueil.svelte";
   import Bibliotheque from "./lib/Bibliotheque.svelte";
   import Ajouter from "./lib/Ajouter.svelte";
   import LivreAuHasard from "./lib/LivreAuHasard.svelte";
+  import { invoke } from "@tauri-apps/api/tauri";
 
-  let showAcc = true;
-  let showBib = false;
-  let showAdd = false;
-  let showLaH = false;
+  let displayID = 0;
 
-  function GoToAcc() {
-    showAcc = true;
-    showBib = false;
-    showAdd = false;
-    showLaH = false;
+  function toggleDisplay(id: number) {
+    displayID = id;
   }
-  function GoToBib() {
-    showAcc = false;
-    showBib = true;
-    showAdd = false;
-    showLaH = false;
-  }
-  function GoToAdd() {
-    showAcc = false;
-    showBib = false;
-    showAdd = true;
-    showLaH = false;
-  }
-  function GoToLaH() {
-    showAcc = false;
-    showBib = false;
-    showAdd = false;
-    showLaH = true;
-  }
+
+  invoke("test_command");
 </script>
 
 <main>
@@ -48,25 +28,25 @@
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
               <button
-                on:click={GoToAcc}
+                on:click={() => toggleDisplay(0)}
                 class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Accueil
               </button>
               <button
-                on:click={GoToBib}
+                on:click={() => toggleDisplay(1)}
                 class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Bibliothèque
               </button>
               <button
-                on:click={GoToAdd}
+                on:click={() => toggleDisplay(2)}
                 class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Ajouter
               </button>
               <button
-                on:click={GoToLaH}
+                on:click={() => toggleDisplay(3)}
                 class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
               >
                 Livre Au Hasard
@@ -80,7 +60,7 @@
               type="button"
               class="bg-inherit p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
             >
-              <span class="sr-only">View notifications</span>
+              <span class="sr-only">Settings</span>
               <img class="h-8 w-8" src={settings} alt="Settings" />
             </button>
           </div>
@@ -89,16 +69,16 @@
     </div>
   </nav>
 
-  {#if showAcc}
+  {#if displayID == 0}
     <Accueil />
   {/if}
-  {#if showBib}
+  {#if displayID == 1}
     <Bibliotheque />
   {/if}
-  {#if showAdd}
+  {#if displayID == 2}
     <Ajouter />
   {/if}
-  {#if showLaH}
+  {#if displayID == 3}
     <LivreAuHasard />
   {/if}
 </main>
