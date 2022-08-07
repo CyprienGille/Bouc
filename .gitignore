@@ -23,4 +23,4 @@ dist-ssr
 *.sw?
 
 # database
-src-tauri/bouc.db
+bouc.db

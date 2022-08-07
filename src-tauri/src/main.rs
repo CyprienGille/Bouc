@@ -43,7 +43,7 @@ async fn fetch_if_contains(pool: &Pool<Sqlite>, field_name: &str, substring: &st
 async fn init_db() -> Pool<Sqlite> {
     let pool: Pool<Sqlite> = sqlite::SqlitePoolOptions::new()
         .max_connections(5)
-        .connect("sqlite:bouc.db?mode=rwc")
+        .connect(r#"sqlite://../bouc.db?mode=rwc"#)
         .await
         .expect("?");
     pool
