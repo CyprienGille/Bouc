@@ -9,14 +9,24 @@ fn test_command() {
     println!("I was called by the frontend!");
 }
 
-#[derive(Debug, sqlx::FromRow, Ord, PartialOrd, Eq, PartialEq)]
+#[derive(Debug, sqlx::FromRow, serde::Serialize, serde::Deserialize)]
 struct Book {
     id: i64,
     title: Option<String>,
     year: i32,
 }
 
-async fn add(pool: &Pool<Sqlite>, title: String, year: i64) -> anyhow::Result<()> {
+async fn init_db() -> Pool<Sqlite> {
+    let pool: Pool<Sqlite> = sqlite::SqlitePoolOptions::new()
+        .max_connections(5)
+        .connect(r#"sqlite://../bouc.db?mode=rwc"#)
+        .await
+        .expect("?");
+    pool
+}
+
+async fn add(title: String, year: i64) -> anyhow::Result<()> {
+    let pool = init_db().await;
     let mut tx = pool.begin().await.expect("begin tx");
 
     sqlx::query(r#"INSERT INTO biblio(title,year) VALUES($1,$2)"#)
@@ -31,22 +41,24 @@ async fn add(pool: &Pool<Sqlite>, title: String, year: i64) -> anyhow::Result<()
     Ok(())
 }
 
-async fn fetch_if_contains(pool: &Pool<Sqlite>, field_name: &str, substring: &str) -> Vec<Book> {
-    let q_string: String = "SELECT * FROM biblio WHERE ".to_owned();
-    let v = sqlx::query_as::<_, Book>(&(q_string + field_name + " LIKE '%" + substring + "%'"))
-        .fetch_all(pool)
+#[tauri::command]
+async fn fetch_all() -> Vec<Book> {
+    let pool = init_db().await;
+    let v = sqlx::query_as::<_, Book>("SELECT * FROM biblio")
+        .fetch_all(&pool)
         .await
-        .expect("dynamic query result");
+        .expect("query all");
     v
 }
 
-async fn init_db() -> Pool<Sqlite> {
-    let pool: Pool<Sqlite> = sqlite::SqlitePoolOptions::new()
-        .max_connections(5)
-        .connect(r#"sqlite://../bouc.db?mode=rwc"#)
+async fn fetch_if_contains(field_name: &str, substring: &str) -> Vec<Book> {
+    let pool = init_db().await;
+    let q_string: String = "SELECT * FROM biblio WHERE ".to_owned();
+    let v = sqlx::query_as::<_, Book>(&(q_string + field_name + " LIKE '%" + substring + "%'"))
+        .fetch_all(&pool)
         .await
-        .expect("?");
-    pool
+        .expect("dynamic query result");
+    v
 }
 
 #[tokio::main]
@@ -65,17 +77,17 @@ async fn main() -> anyhow::Result<()> {
     .await
     .expect("create table");
 
-    add(&pool, String::from("Les Miserables"), 1879).await?;
-    add(&pool, String::from("Les Miserables 2"), 1882).await?;
+    add(String::from("Les Miserables"), 1879).await?;
+    add(String::from("Les Miserables 2"), 1882).await?;
 
-    let field_name = "title";
-    let substring = "Miser";
-    let v = fetch_if_contains(&pool, field_name, substring).await;
+    // let field_name = "title";
+    // let substring = "Miser";
+    // let v = fetch_if_contains(field_name, substring).await;
 
-    dbg!(v);
+    // dbg!(v);
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![test_command])
+        .invoke_handler(tauri::generate_handler![test_command, fetch_all])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 
