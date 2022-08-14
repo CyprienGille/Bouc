@@ -36,22 +36,22 @@
 
 <main>
   <div class="min-h-full">
-    <header class="bg-sky-50 shadow">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900">Bibliothèque</h1>
+    {#if displayID == -1}
+      <header class="bg-sky-50 shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <h1 class="text-3xl font-bold text-gray-900">Bibliothèque</h1>
+        </div>
+      </header>
+      <div class="text-center">
+        <button
+          type="button"
+          on:click={reloadOnClick}
+          class="py-2 px-4 my-2  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
+        >
+          Actualiser
+        </button>
       </div>
-    </header>
-    <div class="text-center">
-      <button
-        type="button"
-        on:click={reloadOnClick}
-        class="py-2 px-4 my-2  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
-      >
-        Actualiser
-      </button>
-    </div>
-    <main>
-      {#if displayID == -1}
+      <main>
         <table class="table bg-white shadow rounded-lg w-full">
           <thead>
             <tr>
@@ -104,21 +104,21 @@
             {/await}
           </tbody>
         </table>
-      {:else if displayAuthorPage == 0}
-        {#await promise}
-          Chargement...
-        {:then book}
-          {#each book as { id, title, author, year }}
-            <div>{id}</div>
-            <div>{title}</div>
-            <div>{author}</div>
-            <div>{year}</div>
-          {/each}
-        {/await}
-      {:else}
-        auteur
-      {/if}
-      <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" />
-    </main>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" />
+      </main>
+    {:else if displayAuthorPage == 0}
+      {#await promise}
+        Chargement...
+      {:then book}
+        {#each book as { id, title, author, year }}
+          <div>{id}</div>
+          <div>{title}</div>
+          <div>{author}</div>
+          <div>{year}</div>
+        {/each}
+      {/await}
+    {:else}
+      auteur
+    {/if}
   </div>
 </main>
