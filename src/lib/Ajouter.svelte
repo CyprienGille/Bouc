@@ -5,14 +5,15 @@
     const success = await invoke("init_book_and_add", {
       title: get_input("input-title"),
       author: get_input("input-author"),
-      year: get_input("input-year"),
+      year: Number(get_input("input-year")),
       genre: get_input("input-genre"),
       theme: get_input("input-theme"),
       place: get_input("input-place"),
-      difficulty: get_input("input-difficulty"),
-      read: get_input("input-read"),
-      copies: get_input("input-copies"),
-      metaBook: get_input("input-meta"),
+      difficulty: Number(get_input("input-difficulty")),
+      read: (<HTMLInputElement>document.getElementById("input-read")).checked,
+      copies: Number(get_input("input-copies")),
+      metaBook: (<HTMLInputElement>document.getElementById("input-meta"))
+        .checked,
       fluff: get_input("input-fluff"),
     });
     return success;
@@ -216,6 +217,15 @@
                 placeholder=""
               />
             </div>
+          </div>
+          <div>
+            <button
+              type="button"
+              class="py-2 px-4  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+              on:click={insertBookOnClick}
+            >
+              Valider
+            </button>
           </div>
         </form>
       </div>
