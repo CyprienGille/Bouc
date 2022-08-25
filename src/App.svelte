@@ -44,12 +44,6 @@
               >
                 Ajouter
               </button>
-              <button
-                on:click={() => toggleDisplay(3)}
-                class="text-gray-200 focus:bg-sky-900 focus:text-white hover:bg-sky-800 hover:text-white px-3 py-2 rounded-xl font-semibold text-xl"
-              >
-                Livre Au Hasard
-              </button>
             </div>
           </div>
         </div>
@@ -72,8 +66,6 @@
     <Bibliotheque />
   {:else if displayID == 2}
     <Ajouter />
-  {:else if displayID == 3}
-    <LivreAuHasard />
   {:else}
     <Accueil />
   {/if}
