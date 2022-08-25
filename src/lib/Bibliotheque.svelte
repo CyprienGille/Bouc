@@ -76,7 +76,7 @@
               <th
                 class="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900"
               >
-                Siècle
+                Année
               </th>
             </tr>
           </thead>
@@ -84,7 +84,7 @@
             {#await promise}
               <p>Waiting...</p>
             {:then all_books}
-              {#each all_books as { id, title, author, century }}
+              {#each all_books as { id, title, author, year }}
                 <tr class="text-gray-700 text-center">
                   <td class="border-b-2 p-4 dark:border-dark-5"> {id} </td>
                   <td class="border-b-2 p-4 dark:border-dark-5">
@@ -101,7 +101,7 @@
                       {author}
                     </button>
                   </td>
-                  <td class="border-b-2 p-4 dark:border-dark-5"> {century} </td>
+                  <td class="border-b-2 p-4 dark:border-dark-5"> {year} </td>
                 </tr>
               {/each}
             {/await}

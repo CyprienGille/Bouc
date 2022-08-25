@@ -14,7 +14,6 @@ struct Book {
     id: i64,
     title: String,
     author: String,
-    century: String,
     year: i32,
     genre: String,
     theme: String,
@@ -24,10 +23,6 @@ struct Book {
     copies: i32,
     meta_book: bool,
     fluff: String,
-}
-
-fn get_century_from_year(_year: i32) -> String {
-    "XVIIeme".to_string()
 }
 
 async fn init_db() -> Pool<Sqlite> {
@@ -58,7 +53,6 @@ async fn init_book_and_add(
         title,
         author,
         year,
-        century: get_century_from_year(year),
         genre,
         theme,
         place,
@@ -80,10 +74,9 @@ async fn add(book: Book) -> anyhow::Result<()> {
     let pool = init_db().await;
     let mut tx = pool.begin().await.expect("begin tx");
 
-    sqlx::query(r#"INSERT INTO biblio(title,author,century,year,genre,theme,place,difficulty,read,copies,meta_book,fluff) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)"#)
+    sqlx::query(r#"INSERT INTO biblio(title,author,year,genre,theme,place,difficulty,read,copies,meta_book,fluff) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)"#)
         .bind(book.title)
         .bind(book.author)
-        .bind(book.century)
         .bind(book.year)
         .bind(book.genre)
         .bind(book.theme)
@@ -143,7 +136,6 @@ async fn main() -> anyhow::Result<()> {
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT,
                     author TEXT,
-                    century TEXT,
                     year INTEGER,
                     genre TEXT,
                     theme TEXT,
@@ -165,7 +157,6 @@ async fn main() -> anyhow::Result<()> {
         title: "Les Misérables".to_string(),
         author: "Victor Hugo".to_string(),
         year: 1876,
-        century: get_century_from_year(1876),
         genre: "Romantisme".to_string(),
         theme: "Divers".to_string(),
         place: "Mur de gauche".to_string(),
