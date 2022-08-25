@@ -23,7 +23,7 @@
   }
 
   function get_input(id) {
-    return document.getElementById(id).value;
+    return (<HTMLInputElement>document.getElementById(id)).value;
   }
 </script>
 
