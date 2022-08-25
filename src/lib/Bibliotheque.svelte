@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import Accueil from "./Accueil.svelte";
+  import Livre from "./Livre.svelte";
 
   // invoke("fetch_all").then((vec) => console.log(vec));
 
@@ -29,7 +29,6 @@
 
   function OnClickOnBook(id) {
     displayID = id;
-    promise = getBookById(id);
   }
 
   // function OnClickOnAuthor(name) {
@@ -111,92 +110,14 @@
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" />
       </main>
     {:else if displayAuthorPage == 0}
-      {#await promise}
-        Chargement...
-      {:then book}
-        <button
-          type="button"
-          on:click={returnToHome}
-          class="py-2 px-4 m-2  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
-        >
-          &lt;&lt; Retour
-        </button>
-        {#each book as { id, title, author, year, century, genre, theme, place, difficulty, read, copies, meta_book, fluff }}
-          <div class="shadow-lg py-12 m-4 rounded-2xl bg-sky-100">
-            <div class="flex flex-col items-center justify-center p-4 -mt-16">
-              <p class="text-slate-900 text-3xl font-medium mt-2">
-                {title}, {author}
-              </p>
-              <p
-                class="text-xl font-bold p-2 bg-sky-300 text-slate-600 px-4 rounded-full my-2"
-              >
-                {year}
-              </p>
-              <div class="rounded-lg p-2 w-full mt-4">
-                <div
-                  class="items-center flex-1 justify-between text-sm text-gray-600"
-                >
-                  <p class="flex flex-col text-xl mb-4">
-                    Siècle
-                    <span class="text-slate-900 text-xl italic">
-                      {century}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Genre
-                    <span class="text-slate-900 text-xl italic">
-                      {genre}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Thème
-                    <span class="text-slate-900 text-xl italic">
-                      {theme}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Lieu
-                    <span class="text-slate-900 text-xl italic">
-                      {place}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Difficulté
-                    <span class="text-slate-900 text-xl italic">
-                      {difficulty}/5
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Lu
-                    <span class="text-slate-900 text-xl italic">
-                      {read}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Nombre d'exemplaires
-                    <span class="text-slate-900 text-xl italic">
-                      {copies}
-                    </span>
-                  </p>
-                  <p class="flex flex-col text-xl mb-4">
-                    Livre du Prof
-                    <span class="text-slate-900 text-xl italic">
-                      {meta_book}
-                    </span>
-                  </p>
-
-                  <p class="flex flex-col text-xl mb-4">
-                    Commentaires
-                    <span class="text-slate-900 text-xl italic">
-                      {fluff}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        {/each}
-      {/await}
+      <button
+        type="button"
+        on:click={returnToHome}
+        class="py-2 px-4 m-2  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
+      >
+        &lt;&lt; Retour
+      </button>
+      <Livre {displayID} />
     {:else}
       auteur
     {/if}
