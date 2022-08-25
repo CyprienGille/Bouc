@@ -1,9 +1,8 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { identity } from "svelte/internal";
   import Accueil from "./Accueil.svelte";
 
-  invoke("fetch_all").then((vec) => console.log(vec));
+  // invoke("fetch_all").then((vec) => console.log(vec));
 
   let displayID = -1;
   let displayAuthorPage = 0;
@@ -134,7 +133,9 @@
                 {year}
               </p>
               <div class="rounded-lg p-2 w-full mt-4">
-                <div class="items-center justify-between text-sm text-gray-600">
+                <div
+                  class="items-center flex-1 justify-between text-sm text-gray-600"
+                >
                   <p class="flex flex-col text-xl mb-4">
                     Siècle
                     <span class="text-slate-900 text-xl italic">
