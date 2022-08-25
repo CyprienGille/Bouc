@@ -36,7 +36,7 @@
     </header>
     <main>
       <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <form class="w-full max-w-2xl">
+        <form class="w-full max-w-4xl">
           <div class="flex flex-wrap -mx-3 mb-3">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
@@ -208,10 +208,11 @@
               >
                 Commentaires
               </label>
-              <input
+              <textarea
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="input-fluff"
-                type="text"
+                rows="5"
+                cols="60"
                 placeholder=""
               />
             </div>
