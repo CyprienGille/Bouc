@@ -26,7 +26,7 @@ struct Book {
     fluff: String,
 }
 
-fn get_century_from_year(year: i64) -> String {
+fn get_century_from_year(_year: i32) -> String {
     "XVIIeme".to_string()
 }
 
@@ -37,6 +37,43 @@ async fn init_db() -> Pool<Sqlite> {
         .await
         .expect("connection init failed");
     pool
+}
+
+#[tauri::command]
+async fn init_book_and_add(
+    title: String,
+    author: String,
+    year: i32,
+    genre: String,
+    theme: String,
+    place: String,
+    difficulty: i8,
+    read: bool,
+    copies: i32,
+    meta_book: bool,
+    fluff: String,
+) -> String {
+    let book = Book {
+        id: 0,
+        title,
+        author,
+        year,
+        century: get_century_from_year(year),
+        genre,
+        theme,
+        place,
+        difficulty,
+        read,
+        copies,
+        meta_book,
+        fluff,
+    };
+
+    add(book)
+        .await
+        .expect("Book Insertion failed from outside the add function");
+
+    String::from("Successfully added book to database.")
 }
 
 async fn add(book: Book) -> anyhow::Result<()> {
@@ -86,10 +123,11 @@ async fn fetch_one_book(id: String) -> Vec<Book> {
     v
 }
 
-async fn fetch_if_contains(field_name: &str, substring: &str) -> Vec<Book> {
+#[tauri::command]
+async fn fetch_if_contains(field_name: String, substring: String) -> Vec<Book> {
     let pool = init_db().await;
-    let q_string: String = "SELECT * FROM biblio WHERE ".to_owned();
-    let v = sqlx::query_as::<_, Book>(&(q_string + field_name + " LIKE '%" + substring + "%'"))
+    let q_string: String = "SELECT * FROM biblio WHERE ".to_string();
+    let v = sqlx::query_as::<_, Book>(&(q_string + &field_name + " LIKE '%" + &substring + "%'"))
         .fetch_all(&pool)
         .await
         .expect("dynamic query result failed");
@@ -150,7 +188,9 @@ async fn main() -> anyhow::Result<()> {
         .invoke_handler(tauri::generate_handler![
             test_command,
             fetch_all,
-            fetch_one_book
+            fetch_one_book,
+            fetch_if_contains,
+            init_book_and_add
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
