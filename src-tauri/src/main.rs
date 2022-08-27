@@ -75,24 +75,46 @@ async fn add(book: Book) -> anyhow::Result<()> {
     let mut tx = pool.begin().await.expect("begin tx");
 
     sqlx::query(r#"INSERT INTO biblio(title,author,year,genre,theme,place,difficulty,read,copies,meta_book,fluff) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)"#)
-        .bind(book.title)
-        .bind(book.author)
-        .bind(book.year)
-        .bind(book.genre)
-        .bind(book.theme)
-        .bind(book.place)
-        .bind(book.difficulty)
-        .bind(book.read)
-        .bind(book.copies)
-        .bind(book.meta_book)
-        .bind(book.fluff)
-        .execute(&mut tx)
-        .await
-        .unwrap_or_else(|_| panic!("insert test in tx failed"));
+    .bind(book.title)
+    .bind(book.author)
+    .bind(book.year)
+    .bind(book.genre)
+    .bind(book.theme)
+    .bind(book.place)
+    .bind(book.difficulty)
+    .bind(book.read)
+    .bind(book.copies)
+    .bind(book.meta_book)
+    .bind(book.fluff)
+    .execute(&mut tx)
+    .await
+    .unwrap_or_else(|_| panic!("insertion tx failed"));
 
     tx.commit().await.expect("tx commit failed");
 
     Ok(())
+}
+
+#[tauri::command]
+async fn modify(id: i64, field_name: String, new_value: String) -> String {
+    let pool = init_db().await;
+    let mut tx = pool.begin().await.expect("begin tx");
+    let mut q_string: String = "UPDATE biblio SET ".to_string();
+    q_string += &field_name;
+    q_string += "='";
+    q_string += &new_value;
+    q_string += "' WHERE id=";
+    q_string += &id.to_string();
+
+    dbg!(&q_string);
+
+    sqlx::query(&q_string)
+        .execute(&mut tx)
+        .await
+        .unwrap_or_else(|_| panic!("update tx failed"));
+
+    tx.commit().await.expect("tx commit failed");
+    String::from("Successfully modified book in database.")
 }
 
 #[tauri::command]
@@ -181,7 +203,8 @@ async fn main() -> anyhow::Result<()> {
             fetch_all,
             fetch_one_book,
             fetch_if_contains,
-            init_book_and_add
+            init_book_and_add,
+            modify
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

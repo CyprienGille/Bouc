@@ -4,7 +4,6 @@
   import Accueil from "./lib/Accueil.svelte";
   import Bibliotheque from "./lib/Bibliotheque.svelte";
   import Ajouter from "./lib/Ajouter.svelte";
-  import LivreAuHasard from "./lib/LivreAuHasard.svelte";
   import { invoke } from "@tauri-apps/api/tauri";
 
   let displayID = 0;
