@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div class="hidden md:block">
+        <!-- <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
             <button
               type="button"
@@ -56,7 +56,7 @@
               <img class="h-8 w-8" src={settings} alt="Settings" />
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </nav>
