@@ -39,6 +39,13 @@
     displayID = id;
   }
 
+  function OnClickOnAuthor(name) {
+    (<HTMLInputElement>document.getElementById("field-choice")).value =
+      "Auteur";
+    (<HTMLInputElement>document.getElementById("input-search")).value = name;
+    submitSearch();
+  }
+
   function submitSearch() {
     promise = search();
   }
@@ -94,9 +101,7 @@
               <option>Thème</option>
               <option>Lieu</option>
               <option>Difficulté</option>
-              <option>Lu</option>
               <option>Copies</option>
-              <option>Livre du Prof</option>
               <option>Commentaires</option>
             </select>
           </div>
@@ -142,13 +147,18 @@
               >
                 Année
               </th>
+              <th
+                class="border-b-2 p-4 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900"
+              >
+                Lieu
+              </th>
             </tr>
           </thead>
           <tbody>
             {#await promise}
               <p>Waiting...</p>
             {:then all_books}
-              {#each all_books as { id, title, author, year }}
+              {#each all_books as { id, title, author, year, place }}
                 <tr class="text-gray-700 text-center">
                   <td class="border-b-2 p-4 dark:border-dark-5"> {id} </td>
                   <td class="border-b-2 p-4 dark:border-dark-5">
@@ -161,11 +171,16 @@
                     </button>
                   </td>
                   <td class="border-b-2 p-4 dark:border-dark-5">
-                    <button type="button" class="text-sky-500 underline">
+                    <button
+                      type="button"
+                      class="text-sky-500 underline"
+                      on:click={() => OnClickOnAuthor(author)}
+                    >
                       {author}
                     </button>
                   </td>
                   <td class="border-b-2 p-4 dark:border-dark-5"> {year} </td>
+                  <td class="border-b-2 p-4 dark:border-dark-5"> {place} </td>
                 </tr>
               {/each}
             {/await}
