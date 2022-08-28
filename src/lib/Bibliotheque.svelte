@@ -5,7 +5,6 @@
   // invoke("fetch_all").then((vec) => console.log(vec));
 
   let displayID = -1;
-  let displayAuthorPage = 0;
   let promise = getAllBooks();
   let txtToField = new Map([
     ["Titre", "title"],
@@ -46,6 +45,12 @@
     submitSearch();
   }
 
+  async function deleteBook() {
+    const success = await invoke("delete", { id: Number(displayID) });
+    returnToHome();
+    return success;
+  }
+
   function submitSearch() {
     promise = search();
   }
@@ -64,10 +69,6 @@
     });
     return vec;
   }
-  // function OnClickOnAuthor(name) {
-  //   displayAuthorPage = 1;
-  //   promise = getBooksFromAuthor(name);
-  // }
 </script>
 
 <main>
@@ -188,17 +189,24 @@
         </table>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" />
       </main>
-    {:else if displayAuthorPage == 0}
-      <button
-        type="button"
-        on:click={returnToHome}
-        class="py-2 px-4 m-2  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
-      >
-        &lt;&lt; Retour
-      </button>
-      <Livre {displayID} />
     {:else}
-      auteur
+      <div class="w-full flex flex-wrap">
+        <button
+          type="button"
+          on:click={returnToHome}
+          class="w-full py-3 px-4 m-2  bg-sky-600 hover:bg-sky-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
+        >
+          &lt;&lt; Retour
+        </button>
+        <button
+          type="button"
+          on:click={deleteBook}
+          class="w-full py-2 px-4 m-2  bg-red-500 hover:bg-red-700 focus:ring-sky-500 focus:ring-offset-indigo-200 text-white max-w-4xl transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg"
+        >
+          Supprimer
+        </button>
+      </div>
+      <Livre {displayID} />
     {/if}
   </div>
 </main>
