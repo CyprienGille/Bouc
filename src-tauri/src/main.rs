@@ -96,6 +96,22 @@ async fn add(book: Book) -> anyhow::Result<()> {
 }
 
 #[tauri::command]
+async fn delete(id: i64) -> String {
+    let pool = init_db().await;
+    let mut tx = pool.begin().await.expect("begin tx");
+
+    sqlx::query(r#"DELETE FROM biblio WHERE id=$1"#)
+        .bind(id)
+        .execute(&mut tx)
+        .await
+        .unwrap_or_else(|_| panic!("removal tx failed"));
+
+    tx.commit().await.expect("tx commit failed");
+
+    String::from("Successfully removed book from database.")
+}
+
+#[tauri::command]
 async fn modify(id: i64, field_name: String, new_value: String) -> String {
     let pool = init_db().await;
     let mut tx = pool.begin().await.expect("begin tx");
@@ -106,7 +122,7 @@ async fn modify(id: i64, field_name: String, new_value: String) -> String {
     q_string += "' WHERE id=";
     q_string += &id.to_string();
 
-    dbg!(&q_string);
+    // dbg!(&q_string);
 
     sqlx::query(&q_string)
         .execute(&mut tx)
@@ -174,22 +190,22 @@ async fn main() -> anyhow::Result<()> {
     .await
     .expect("create table");
 
-    let les_mis = Book {
-        id: 30,
-        title: "Les Misérables".to_string(),
-        author: "Victor Hugo".to_string(),
-        year: 1876,
-        genre: "Romantisme".to_string(),
-        theme: "Divers".to_string(),
-        place: "Mur de gauche".to_string(),
-        difficulty: 4,
-        read: true,
-        meta_book: false,
-        copies: 3,
-        fluff: "".to_string(),
-    };
+    // let les_mis = Book {
+    //     id: 30,
+    //     title: "Les Misérables".to_string(),
+    //     author: "Victor Hugo".to_string(),
+    //     year: 1876,
+    //     genre: "Romantisme".to_string(),
+    //     theme: "Divers".to_string(),
+    //     place: "Mur de gauche".to_string(),
+    //     difficulty: 4,
+    //     read: true,
+    //     meta_book: false,
+    //     copies: 3,
+    //     fluff: "".to_string(),
+    // };
 
-    add(les_mis).await?;
+    // add(les_mis).await?;
 
     // let field_name = "title";
     // let substring = "Miser";
@@ -204,7 +220,8 @@ async fn main() -> anyhow::Result<()> {
             fetch_one_book,
             fetch_if_contains,
             init_book_and_add,
-            modify
+            modify,
+            delete
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
