@@ -136,33 +136,30 @@ async fn modify(id: i64, field_name: String, new_value: String) -> String {
 #[tauri::command]
 async fn fetch_all() -> Vec<Book> {
     let pool = init_db().await;
-    let v = sqlx::query_as::<_, Book>("SELECT * FROM biblio")
+    sqlx::query_as::<_, Book>("SELECT * FROM biblio")
         .fetch_all(&pool)
         .await
-        .expect("query all failed");
-    v
+        .expect("query all failed")
 }
 
 #[tauri::command]
 async fn fetch_one_book(id: String) -> Vec<Book> {
     let pool = init_db().await;
     let q_string: String = "SELECT * FROM biblio WHERE id=".to_string();
-    let v = sqlx::query_as::<_, Book>(&(q_string + &id))
+    sqlx::query_as::<_, Book>(&(q_string + &id))
         .fetch_all(&pool)
         .await
-        .expect("query one book by id failed");
-    v
+        .expect("query one book by id failed")
 }
 
 #[tauri::command]
 async fn fetch_if_contains(field_name: String, substring: String) -> Vec<Book> {
     let pool = init_db().await;
     let q_string: String = "SELECT * FROM biblio WHERE ".to_string();
-    let v = sqlx::query_as::<_, Book>(&(q_string + &field_name + " LIKE '%" + &substring + "%'"))
+    sqlx::query_as::<_, Book>(&(q_string + &field_name + " LIKE '%" + &substring + "%'"))
         .fetch_all(&pool)
         .await
-        .expect("dynamic query result failed");
-    v
+        .expect("dynamic query result failed")
 }
 
 #[tokio::main]
