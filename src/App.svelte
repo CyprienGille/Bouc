@@ -1,10 +1,9 @@
 <script lang="ts">
   import logo from "./assets/svelte.png";
-  import settings from "./assets/settings.png";
   import Accueil from "./lib/Accueil.svelte";
   import Bibliotheque from "./lib/Bibliotheque.svelte";
   import Ajouter from "./lib/Ajouter.svelte";
-  import { invoke } from "@tauri-apps/api/tauri";
+  // import { invoke } from "@tauri-apps/api/tauri";
 
   let displayID = 0;
 
@@ -12,7 +11,7 @@
     displayID = id;
   }
 
-  invoke("test_command");
+  // invoke("test_command");
 </script>
 
 <main>

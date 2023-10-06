@@ -86,7 +86,7 @@ async fn add(book: Book) -> anyhow::Result<()> {
     .bind(book.copies)
     .bind(book.meta_book)
     .bind(book.fluff)
-    .execute(&mut tx)
+    .execute(&mut *tx)
     .await
     .unwrap_or_else(|_| panic!("insertion tx failed"));
 
@@ -102,7 +102,7 @@ async fn delete(id: i64) -> String {
 
     sqlx::query(r#"DELETE FROM biblio WHERE id=$1"#)
         .bind(id)
-        .execute(&mut tx)
+        .execute(&mut *tx)
         .await
         .unwrap_or_else(|_| panic!("removal tx failed"));
 
@@ -125,7 +125,7 @@ async fn modify(id: i64, field_name: String, new_value: String) -> String {
     // dbg!(&q_string);
 
     sqlx::query(&q_string)
-        .execute(&mut tx)
+        .execute(&mut *tx)
         .await
         .unwrap_or_else(|_| panic!("update tx failed"));
 
